@@ -26,6 +26,7 @@ class Customer {
        FROM customers
        ORDER BY last_name, first_name`
     );
+    // console.log(results.rows.map(c => new Customer(c)));
     return results.rows.map(c => new Customer(c));
   }
 
@@ -78,6 +79,44 @@ class Customer {
       );
     }
   }
+
+  get fullName() {
+    return `${this.firstName} ${this.lastName}`;
+  }
+  
+  
+  // async fullName(id) {
+  //   const results = await db.query(
+  //     `SELECT id, 
+  //        first_name AS "firstName",  
+  //        last_name AS "lastName" 
+  //       FROM customers WHERE id=$1`, [id]
+  //   );
+  //     const firstName = results.rows[0].firstName;
+  //     const lastName = results.rows[0].lastName;
+  //     const customerName = `${firstName} ${lastName}`;
+  //     return customerName;
+  // }
+
+
+  //   static async fullName() {
+  //   const results = await db.query(
+  //     `SELECT id, 
+  //        first_name AS "firstName",  
+  //        last_name AS "lastName" 
+  //       FROM customers`
+  //   );
+  //     const customers = results.rows;
+  //     customers.forEach(customer => {
+  //       const firstName = customer.firstName;
+  //       const lastName = customer.lastName;
+  //       const customerName = `${firstName} ${lastName}`;
+  //       console.log(customerName);
+  //       return customerName;
+  //     });
+  // }
+
+
 }
 
 module.exports = Customer;
