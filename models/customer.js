@@ -83,7 +83,9 @@ class Customer {
   get fullName() {
     return `${this.firstName} ${this.lastName}`;
   }
+
   
+
   
   // async fullName(id) {
   //   const results = await db.query(
