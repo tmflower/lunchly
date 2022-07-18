@@ -86,7 +86,8 @@ class Customer {
 
   
 
-  
+  /** The mess I was making before giving up and looking at the solution: */
+
   // async fullName(id) {
   //   const results = await db.query(
   //     `SELECT id, 
@@ -100,6 +101,7 @@ class Customer {
   //     return customerName;
   // }
 
+  /** The above code actually worked for an individual, but then I had the problem of accessing fullName for the entire list, and never found a way to make that work */
 
   //   static async fullName() {
   //   const results = await db.query(
