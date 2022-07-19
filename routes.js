@@ -141,4 +141,17 @@ router.post("/:id/edit-reservation/:id", async function(req, res, next) {
   }
 });
 
+/** Show results of search */
+
+router.get("/search/results", async function (req, res, next) {
+  console.log('help!');
+  try {
+    return res.render('search_results.html');
+  }
+  catch (err) {
+    return next (err);
+  }
+});
+
+
 module.exports = router;
