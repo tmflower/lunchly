@@ -84,42 +84,16 @@ class Customer {
     return `${this.firstName} ${this.lastName}`;
   }
 
-  
-
-  /** The mess I was making before giving up and looking at the solution: */
-
-  // async fullName(id) {
-  //   const results = await db.query(
-  //     `SELECT id, 
-  //        first_name AS "firstName",  
-  //        last_name AS "lastName" 
-  //       FROM customers WHERE id=$1`, [id]
-  //   );
-  //     const firstName = results.rows[0].firstName;
-  //     const lastName = results.rows[0].lastName;
-  //     const customerName = `${firstName} ${lastName}`;
-  //     return customerName;
-  // }
-
-  /** The above code actually worked for an individual, but then I had the problem of accessing fullName for the entire list, and never found a way to make that work */
-
-  //   static async fullName() {
-  //   const results = await db.query(
-  //     `SELECT id, 
-  //        first_name AS "firstName",  
-  //        last_name AS "lastName" 
-  //       FROM customers`
-  //   );
-  //     const customers = results.rows;
-  //     customers.forEach(customer => {
-  //       const firstName = customer.firstName;
-  //       const lastName = customer.lastName;
-  //       const customerName = `${firstName} ${lastName}`;
-  //       console.log(customerName);
-  //       return customerName;
-  //     });
-  // }
-
+  async find(searchCust) {
+    const results = await db.query(`SELECT first_name, last_name FROM customers WHERE first_name === ${searchCust} OR last_name === ${searchCust}`);
+    if (results.rows === 0) {
+      const err = new Error(`Sorry, we don't have a customer named ${searchCust}`);
+      err.status = 404;
+      throw err;
+    }
+    console.log(results.rows[0]);
+    return results.rows[0];
+  }
 
 }
 

@@ -3,8 +3,15 @@
 
 {% block content %}
 
+{% if matches.length === 0 %}
+<h3>Sorry, there are no matches for {{ searchCust }}. Please try another search.</h3>
+{% else %}
+<h3>Here are your search results for {{ searchCust }}:</h3>
 
-<h1>Here are your search results:</h1>
-
-
+<ul>
+  {% for match in matches %}
+  <li><a href="/{{ match.id }}/">{{ match.fullName }}</a></li>
+  {% endfor %}
+</ul>
+{% endif %}
 {% endblock %}

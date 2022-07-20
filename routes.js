@@ -1,6 +1,7 @@
 /** Routes for Lunchly */
 
 const express = require("express");
+const { search } = require("./app");
 
 const Customer = require("./models/customer");
 const Reservation = require("./models/reservation");
@@ -144,14 +145,38 @@ router.post("/:id/edit-reservation/:id", async function(req, res, next) {
 /** Show results of search */
 
 router.get("/search/results", async function (req, res, next) {
-  console.log('help!');
   try {
-    return res.render('search_results.html');
+    let cust;   
+    const searchCust = req.query.customerSearch;
+    const searchCustLower = searchCust.toLowerCase();
+
+    const matches = [];
+
+    const customers = await Customer.all();
+    for (let customer of customers) {
+      cust = customer;
+      const custLower = cust.fullName.toLowerCase();
+      console.log(custLower);
+      console.log(typeof(custLower));
+      console.log(searchCustLower);
+      console.log(typeof(searchCustLower));
+
+        if (custLower.includes(searchCustLower)) {
+          const foundCust = cust;
+
+          console.log(foundCust);
+
+          matches.push(foundCust);
+          console.log(matches);
+        }        
+    } return res.render('search_results.html', {searchCust: req.query.customerSearch, matches});
   }
   catch (err) {
     return next (err);
   }
 });
 
+// 
+// 
 
 module.exports = router;
