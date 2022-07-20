@@ -149,25 +149,14 @@ router.get("/search/results", async function (req, res, next) {
     let cust;   
     const searchCust = req.query.customerSearch;
     const searchCustLower = searchCust.toLowerCase();
-
     const matches = [];
-
     const customers = await Customer.all();
     for (let customer of customers) {
       cust = customer;
       const custLower = cust.fullName.toLowerCase();
-      console.log(custLower);
-      console.log(typeof(custLower));
-      console.log(searchCustLower);
-      console.log(typeof(searchCustLower));
-
         if (custLower.includes(searchCustLower)) {
           const foundCust = cust;
-
-          console.log(foundCust);
-
           matches.push(foundCust);
-          console.log(matches);
         }        
     } return res.render('search_results.html', {searchCust: req.query.customerSearch, matches});
   }
