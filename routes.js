@@ -47,6 +47,30 @@ router.post("/add/", async function(req, res, next) {
   }
 });
 
+/** Show results of search */
+
+router.get("/search/", async function (req, res, next) {
+  try {
+    let cust;   
+    const searchCust = req.query.customerSearch;
+    const searchCustLower = searchCust.toLowerCase();
+    const matches = [];
+    const customers = await Customer.all();
+    for (let customer of customers) {
+      cust = customer;
+      const custLower = cust.fullName.toLowerCase();
+        if (custLower.includes(searchCustLower)) {
+          const foundCust = cust;
+          matches.push(foundCust);
+        }        
+    } return res.render('search_results.html', {searchCust: req.query.customerSearch, matches});
+  }
+  catch (err) {
+    return next (err);
+  }
+});
+
+
 /** Show a customer, given their ID. */
 
 router.get("/:id/", async function(req, res, next) {
@@ -115,57 +139,38 @@ router.post("/:id/add-reservation/", async function(req, res, next) {
 
 /** Handle editing a reservation */
 
-router.get("/:id/edit-reservation/:id", async function(req, res, next) {
+router.get("/:id/edit-reservation/:reservationId", async function(req, res, next) {
   try {
     
-    const reservation = await Reservation.get(req.params.id);
-    console.log(reservation);
+    const reservation = await Reservation.get(req.params.reservationId);
+    const customer = await Customer.get(req.params.id);
 
-    res.render("reservation_edit.html", { reservation });
+    res.render("reservation_edit_form.html", { reservation, customer });
   } catch (err) {
     return next(err);
   }
 });
 
-router.post("/:id/edit-reservation/:id", async function(req, res, next) {
+router.post("/:id/edit-reservation/:reservationId", async function(req, res, next) {
   try {
-    const reservation = await Reservation.get(req.params.id);
+
+    const customer = await Customer.get(req.params.id)
+    const reservation = await Reservation.get(req.params.reservationId);
+    const reservations = await customer.getReservations();
+
     reservation.customerId = req.params.id;
     reservation.startAt = new Date(req.body.startAt);
     reservation.numGuests = req.body.numGuests;
     reservation.notes = req.body.notes;
+
     await reservation.save();
 
-    return res.redirect(`/${reservation.customerId}/`);
+    return res.redirect(`/${customer.id}`)
+    // return res.render("customer_detail.html", { customer, reservations });
   } catch (err) {
     return next(err);
   }
 });
 
-/** Show results of search */
-
-router.get("/search/results", async function (req, res, next) {
-  try {
-    let cust;   
-    const searchCust = req.query.customerSearch;
-    const searchCustLower = searchCust.toLowerCase();
-    const matches = [];
-    const customers = await Customer.all();
-    for (let customer of customers) {
-      cust = customer;
-      const custLower = cust.fullName.toLowerCase();
-        if (custLower.includes(searchCustLower)) {
-          const foundCust = cust;
-          matches.push(foundCust);
-        }        
-    } return res.render('search_results.html', {searchCust: req.query.customerSearch, matches});
-  }
-  catch (err) {
-    return next (err);
-  }
-});
-
-// 
-// 
 
 module.exports = router;

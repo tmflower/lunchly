@@ -84,16 +84,16 @@ class Customer {
     return `${this.firstName} ${this.lastName}`;
   }
 
-  async find(searchCust) {
-    const results = await db.query(`SELECT first_name, last_name FROM customers WHERE first_name === ${searchCust} OR last_name === ${searchCust}`);
-    if (results.rows === 0) {
-      const err = new Error(`Sorry, we don't have a customer named ${searchCust}`);
-      err.status = 404;
-      throw err;
-    }
-    console.log(results.rows[0]);
-    return results.rows[0];
-  }
+  // async find(searchCust) {
+  //   const results = await db.query(`SELECT first_name, last_name FROM customers WHERE first_name === ${searchCust} OR last_name === ${searchCust}`);
+  //   if (results.rows === 0) {
+  //     const err = new Error(`Sorry, we don't have a customer named ${searchCust}`);
+  //     err.status = 404;
+  //     throw err;
+  //   }
+  //   console.log(results.rows[0]);
+  //   return results.rows[0];
+  // }
 
 }
 

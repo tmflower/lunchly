@@ -29,7 +29,7 @@ class Reservation {
       `SELECT id, 
          customer_id AS "customerId",  
          num_guests AS "numGuests", 
-         notes 
+         notes as "notes"
         FROM reservations WHERE id = $1`,
       [id]
     );
